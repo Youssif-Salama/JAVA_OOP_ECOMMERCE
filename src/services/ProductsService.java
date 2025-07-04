@@ -29,11 +29,21 @@ public class ProductsService {
     }
 
     public void addProduct(String name, double price, int quantity) {
-        Product p = new Product(null, 0, 0);
+        Product p = new Product(name, price, quantity);
         products.add(p);
     }
 
     public List<Product> getProducts(){
         return products;
     }
+
+    public Product getProductByName(String name) {
+        for (Product product : products) {
+            if (product.getName().equalsIgnoreCase(name)) {
+                return product;
+            }
+        }
+        return null;
+    }
+
 }

@@ -1,53 +1,42 @@
 package src.models.cart;
 
-import src.interfaces.Shippable;
-import src.models.product.Product;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import src.models.customer.Customer;
+
 public class Cart {
     private int id;
-    private int customerId;
-    private List<CartItem> items;
+    private Customer customer;
+    private List<CartItem> items=new ArrayList<>();
 
-    public Cart(int id, int customerId) {
+    public Cart(int id, Customer customer) {
         this.id = id;
-        this.customerId = customerId;
-        this.items = new ArrayList<>();
+        this.customer = customer;
     }
 
-    public void addProduct(Product product, int quantity) {
-        if (quantity > product.getQuantity()) {
-            throw new IllegalArgumentException("Quantity exceeds available stock.");
-        }
-
-        items.add(new CartItem(product, quantity));
+    public int getId() {
+        return id;
     }
 
-    public boolean isEmpty() {
-        return items.isEmpty();
-    }
-
-    public double getSubtotal() {
-        return items.stream()
-                .mapToDouble(CartItem::getTotalPrice)
-                .sum();
+    public Customer getCustomer() {
+        return customer;
     }
 
     public List<CartItem> getItems() {
         return items;
     }
 
-    public List<Shippable> getShippableItems() {
-        List<Shippable> shippableList = new ArrayList<>();
-        for (CartItem item : items) {
-            if (item.getProduct() instanceof Shippable) {
-                for (int i = 0; i < item.getQuantity(); i++) {
-                    shippableList.add((Shippable) item.getProduct());
-                }
-            }
-        }
-        return shippableList;
+
+    public boolean isEmpty() {
+        return this.items.isEmpty();
+    }
+
+    public void addItem(CartItem item) {
+        this.items.add(item);
+    }
+
+    public void removeItem(CartItem item) {
+        this.items.remove(item);
     }
 }
