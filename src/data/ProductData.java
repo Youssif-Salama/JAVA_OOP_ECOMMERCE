@@ -1,11 +1,10 @@
 package src.data;
 
-import src.models.Product;
-
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import src.models.product.Product;
 
 public class ProductData {
     public static List<Product> getInitialProducts() {

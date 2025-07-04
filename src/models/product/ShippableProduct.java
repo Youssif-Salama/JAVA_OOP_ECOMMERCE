@@ -1,4 +1,4 @@
-package src.models;
+package src.models.product;
 
 import src.interfaces.Shippable;
 

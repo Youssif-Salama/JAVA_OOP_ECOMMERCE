@@ -1,4 +1,4 @@
-package src.models;
+package src.models.product;
 
 public class Product {
     protected int id;
