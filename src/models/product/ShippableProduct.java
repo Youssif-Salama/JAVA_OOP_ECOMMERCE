@@ -5,8 +5,8 @@ import src.interfaces.Shippable;
 public class ShippableProduct extends Product implements Shippable {
     protected double weight;
 
-    public ShippableProduct(int id, String name, double price, int quantity, double weight) {
-        super(id, name, price, quantity);
+    public ShippableProduct( String name, double price, int quantity, double weight) {
+        super(name, price, quantity);
         this.weight = weight;
     }
 
