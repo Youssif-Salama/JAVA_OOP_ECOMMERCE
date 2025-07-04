@@ -5,11 +5,10 @@ import src.models.cart.Cart;
 import src.models.cart.CartItem;
 import src.models.customer.Customer;
 import src.models.product.Product;
+import src.models.shipping.Shipping;
 import src.services.ProductsService;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -96,27 +95,40 @@ public class Main {
                 }
 
             } while (loop);
-            System.out.println("\n📦 Shippable Items Summary:");
+            // Shipping
+            Shipping shipping = new Shipping(cart);
+            shipping.processShipping();
 
-            List<Shippable> shippableItems = new ArrayList<>();
-            double totalWeight = 0;
+            // Checkout
+            System.out.println("\n ** Checkout receipt **");
+            double subtotal = 0;
+            boolean hasShippables = false;
 
             for (CartItem item : cart.getItems()) {
-                Product p = item.getProduct();
-                if (p instanceof Shippable) {
-                    for (int i = 0; i < item.getQuantity(); i++) {
-                        shippableItems.add((Shippable) p);
-                        totalWeight += ((Shippable) p).getWeight();
-                        System.out.println("- " + p.getName() + " " + ((Shippable) p).getWeight() + "kg");
-                    }
-                }
+                double itemTotal = item.getTotalPrice();
+                subtotal += itemTotal;
+                System.out.printf("%dx %s %.2f\n", item.getQuantity(), item.getProduct().getName(), itemTotal);
+
+                if (item.getProduct() instanceof Shippable)
+                    hasShippables = true;
             }
 
-            if (shippableItems.isEmpty()) {
-                System.out.println("🚫 No shippable items in cart.");
+            double shippingFee = hasShippables ? 30.0 : 0;
+            double total = subtotal + shippingFee;
+
+            System.out.println("----------------------");
+            System.out.printf("Subtotal: EGP %.2f\n", subtotal);
+            System.out.printf("Shipping: EGP %.2f\n", shippingFee);
+            System.out.printf("Total Paid: EGP %.2f\n", total);
+
+            if (customer.getBalance() < total) {
+                System.out.println("❌ Insufficient balance. Payment failed.");
             } else {
-                System.out.printf("📦 Total package weight: %.2f kg\n", totalWeight);
+                customer.reduceBalance(total);
+                System.out.printf("✅ Payment successful. Remaining Balance: EGP %.2f\n", customer.getBalance());
             }
+
+            sc.close();
 
         }
 
