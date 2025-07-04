@@ -1,33 +1,19 @@
 package src.models;
 
 import java.time.LocalDate;
+import src.interfaces.Shippable;
 
-public class ShippableExpirableProduct {
-    private boolean isExpirable;
-    private LocalDate expiryDate;
-    private boolean isShippable;
+public class ShippableExpirableProduct extends ExpirableProduct implements Shippable {
     private double weight;
 
-    public ShippableExpirableProduct(boolean isExpirable, LocalDate expiryDate, boolean isShippable, double weight) {
-        this.isExpirable = isExpirable;
-        this.expiryDate = expiryDate;
-        this.isShippable = isShippable;
+    public ShippableExpirableProduct(int id, String name, double price, int quantity,
+            LocalDate expiryDate, double weight) {
+        super(id, name, price, quantity, expiryDate);
         this.weight = weight;
     }
 
+    @Override
     public double getWeight() {
         return weight;
-    }
-
-    public boolean isShippable() {
-        return isShippable;
-    }
-
-    public boolean isExpirable() {
-        return isExpirable;
-    }
-
-    public LocalDate getExpirationDate() {
-        return expiryDate;
     }
 }

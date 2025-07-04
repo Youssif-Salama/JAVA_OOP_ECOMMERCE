@@ -1,20 +1,17 @@
 package src.models;
 
-public class ShippableProduct extends Product {
-    private boolean isShippable;
-    private double weight;
+import src.interfaces.Shippable;
 
-    public ShippableProduct(int id, String name, double price, int quantity, boolean isShippable) {
+public class ShippableProduct extends Product implements Shippable {
+    protected double weight;
+
+    public ShippableProduct(int id, String name, double price, int quantity, double weight) {
         super(id, name, price, quantity);
-        this.isShippable = isShippable;
         this.weight = weight;
     }
 
+    @Override
     public double getWeight() {
         return weight;
-    }
-
-    public boolean isShippable() {
-        return isShippable;
     }
 }
